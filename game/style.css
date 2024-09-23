@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f8ff; /* Light background color */
+    background-color: #f0f8ff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,26 +10,26 @@ body {
 }
 
 h1 {
-    color: #333; /* Darker title color */
+    color: #333;
 }
 
 button {
-    background-color: #4caf50; /* Green background */
-    color: white; /* White text color */
+    background-color: #4caf50;
+    color: white;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     margin: 10px 0;
     font-size: 18px;
-    cursor: pointer; /* Pointer cursor */
-    transition: background-color 0.3s; /* Smooth background transition */
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
 }
 
 button:disabled {
-    background-color: #ccc; /* Grey background for disabled buttons */
-    cursor: not-allowed; /* Not allowed cursor */
+    background-color: #ccc;
+    cursor: not-allowed;
 }
