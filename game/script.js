@@ -12,9 +12,9 @@ const levels = [
     ],
     // Level 2 with 3 obstacles
     [
-        { type: 'grass', x: 100, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
-        { type: 'grass', x: 300, y: window.innerHeight - (grassHeight + 50), width: 50, height: grassHeight },
-        { type: 'grass', x: 500, y: window.innerHeight - (grassHeight + 100), width: 50, height: grassHeight },
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
+        { type: 'grass', x: 900, y: window.innerHeight - (grassHeight + 50), width: 50, height: grassHeight },
+        { type: 'grass', x: 1300, y: window.innerHeight - (grassHeight + 100), width: 50, height: grassHeight },
     ],
 ];
 
