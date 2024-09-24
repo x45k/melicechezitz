@@ -6,15 +6,15 @@ const grassHeight = playerHeight - 10;
 const levels = [
     // Level 1 with 3 obstacles
     [
-        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
-        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
-        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
     ],
     // Level 2 with 3 obstacles
     [
-        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
-        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
-        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 50, height: grassHeight },
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
     ],
 ];
 
