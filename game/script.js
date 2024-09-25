@@ -119,7 +119,7 @@ function initPlayer(gameContainer) {
 }
 
 function jump() {
-    if (player.jumpCount < 2) { 
+    if (player.jumpCount < 1) { 
         player.velocityY = -player.jumpPower; 
         player.jumpCount++;
     }
