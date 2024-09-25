@@ -16,6 +16,14 @@ const levels = [
         { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
         { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
     ],
+    // Level 3 with 5 obstacles
+    [
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
+        { type: 'grass', x: 750, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 5) },
+        { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 45, height: grassHeight },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 10) },
+        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
+    ],
 ];
 
 const player = {
