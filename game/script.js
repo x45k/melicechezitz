@@ -12,9 +12,9 @@ const levels = [
     ],
     // Level 2 with 3 obstacles
     [
-        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
-        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
-        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
+        { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
+        { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
     ],
 ];
 
@@ -27,7 +27,7 @@ const player = {
     gravity: 0.5,
     jumpPower: 10,
     jumpCount: 0,
-    moveSpeed: 2,
+    moveSpeed: 4,
 };
 
 function initGame() {
