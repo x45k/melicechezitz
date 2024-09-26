@@ -216,7 +216,7 @@ function levelComplete() {
     document.body.appendChild(overlay);
 
     const message = document.createElement('h2');
-    message.textContent = 'Level Complete!';
+    message.textContent = `Level ${currentLevel + 1} Complete`;
     overlay.appendChild(message);
 
     const quitButton = document.createElement('button');
