@@ -1,4 +1,6 @@
 // Global variables
+let currentPage = 0;
+const levelsPerPage = 5;
 let currentLevel = 0;
 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 const playerHeight = 30;
@@ -47,6 +49,8 @@ const levels = [
     ],
 ];
 
+const totalPages = Math.ceil(levels.length / levelsPerPage); // this is here cause js was being stupid asf, couldnt access levels before initialization whatever
+
 const player = {
     x: 50,
     y: window.innerHeight - playerHeight - 5,
@@ -71,26 +75,109 @@ function navigateToLevel(level) {
 
 function showLevelMenu() {
     document.body.innerHTML = '';
+
+    document.body.style.backgroundImage = 'url(./assets/background.png)';
+    document.body.style.backgroundSize = 'cover';
+    document.body.style.backgroundPosition = 'center';
+    document.body.style.backgroundRepeat = 'no-repeat';
+
     const title = document.createElement('h1');
     title.textContent = 'Select Level';
+    title.style.fontFamily = 'Fantasy, sans-serif';
+    title.style.textAlign = 'center';
+    title.style.marginTop = '50px';
+    title.style.color = '#fff';
+    title.style.textShadow = '2px 2px 10px rgba(0, 0, 0, 0.7)';
     document.body.appendChild(title);
 
-    for (let i = 0; i < levels.length; i++) {
+    const levelsContainer = document.createElement('div');
+    levelsContainer.style.display = 'flex';
+    levelsContainer.style.justifyContent = 'center';
+    levelsContainer.style.flexWrap = 'wrap';
+    levelsContainer.style.marginTop = '20px';
+    document.body.appendChild(levelsContainer);
+
+    const startLevel = currentPage * levelsPerPage;
+    const endLevel = Math.min(startLevel + levelsPerPage, levels.length);
+    for (let i = startLevel; i < endLevel; i++) {
         const button = document.createElement('button');
         button.textContent = `Level ${i + 1}`;
-        button.style.width = '200px';
-        button.onclick = () => navigateToLevel(i);
+        button.style.width = '150px';
+        button.style.height = '60px';
+        button.style.margin = '10px';
+        button.style.borderRadius = '15px';
+        button.style.fontSize = '18px';
+        button.style.backgroundColor = '#007BFF';
+        button.style.color = '#fff';
+        button.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
+        button.style.cursor = 'pointer';
+        button.style.transition = 'transform 0.2s';
+
+        button.onmouseover = () => {
+            button.style.transform = 'scale(1.1)';
+        };
+        button.onmouseout = () => {
+            button.style.transform = 'scale(1)';
+        };
 
         if (completedLevels.includes(i) || i === 0) {
-            document.body.appendChild(button);
+            button.onclick = () => navigateToLevel(i);
         } else {
             button.disabled = true;
+            button.style.backgroundColor = '#555';
             button.style.cursor = 'not-allowed';
         }
+
+        levelsContainer.appendChild(button);
     }
+
+    const navContainer = document.createElement('div');
+    navContainer.style.display = 'flex';
+    navContainer.style.justifyContent = 'center';
+    navContainer.style.marginTop = '30px';
+    document.body.appendChild(navContainer);
+
+    const prevButton = document.createElement('button');
+    prevButton.textContent = '← Previous';
+    prevButton.style.padding = '10px 20px';
+    prevButton.style.marginRight = '20px';
+    prevButton.style.fontSize = '18px';
+    prevButton.style.cursor = 'pointer';
+    prevButton.style.borderRadius = '10px';
+    prevButton.style.backgroundColor = currentPage > 0 ? '#28A745' : '#888';
+    prevButton.style.color = '#fff';
+    prevButton.style.border = 'none';
+    prevButton.onclick = () => {
+        if (currentPage > 0) {
+            currentPage--;
+            showLevelMenu();
+        }
+    };
+
+    // Create "Next" button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next →';
+    nextButton.style.padding = '10px 20px';
+    nextButton.style.fontSize = '18px';
+    nextButton.style.cursor = 'pointer';
+    nextButton.style.borderRadius = '10px';
+    nextButton.style.backgroundColor = currentPage < totalPages - 1 ? '#28A745' : '#888';
+    nextButton.style.color = '#fff';
+    nextButton.style.border = 'none';
+    nextButton.onclick = () => {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            showLevelMenu();
+        }
+    };
+
+    prevButton.disabled = currentPage === 0;
+    nextButton.disabled = currentPage === totalPages - 1;
+
+    navContainer.appendChild(prevButton);
+    navContainer.appendChild(nextButton);
 }
 
-// Start the selected level
 function startLevel(level) {
     document.body.innerHTML = '';
 
@@ -141,6 +228,12 @@ function initPlayer(gameContainer) {
             jump();
         }
     });
+    
+    document.addEventListener('mousedown', (e) => {
+        if (e.button === 0) {
+            jump();
+        }
+    });    
 
     const gameInterval = setInterval(() => {
         updateGame(playerElement, gameContainer, gameInterval);
