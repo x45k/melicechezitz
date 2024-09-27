@@ -26,24 +26,24 @@ const levels = [
     ],
     // Level 4 with 3 wide obstacles
     [
-        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width 50, height: grassheight - 5},
-        { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width 50, height: grassheight - 5},
-        { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width 50, height: grassheight - 5},
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
+        { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
+        { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
     ],
     [
     //Level 5 with 3 tall obstacles
-        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width 35, height: grassheight + 10},
-        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width 35, height: grassheight + 10},
-        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width 40, height: grassheight + 10},
+        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
+        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
     [
     //Level 6 with a mix of tall and short obstacles
-        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width 35, height: grassheight + 10},
-        { type: 'grass', x: 700, y: window.innerHeight - grassHeight, width 50, height: grassheight - 5},
-        { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width 35, height: grassheight + 10},
-        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width 50, height: grassheight - 5},
-        { type: 'grass', x: 1800, y: window.innerHeight - grassHeight, width 35, height: grassheight + 10},
-        { type: 'grass', x: 2200, y: window.innerHeight - grassHeight, width 50, height: grassheight + 10},
+        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
+        { type: 'grass', x: 700, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
+        { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
+        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5)},
+        { type: 'grass', x: 1800, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10)},
+        { type: 'grass', x: 2200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 10) },
     ],
 ];
 
@@ -138,8 +138,6 @@ function initPlayer(gameContainer) {
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
-            jump();
-        if (e.code === 'W') {
             jump();
         }
     });
