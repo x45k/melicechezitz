@@ -243,6 +243,10 @@ function levelComplete() {
     const quitButton = document.createElement('button');
     quitButton.textContent = 'Quit';
     quitButton.onclick = () => {
+        if (!completedLevels.includes(currentLevel)) {
+            completedLevels.push(currentLevel);
+            localStorage.setItem('completedLevels', JSON.stringify(completedLevels));
+        }
         document.body.removeChild(overlay);
         showLevelMenu();
     };
