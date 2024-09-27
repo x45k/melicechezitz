@@ -224,7 +224,8 @@ function initPlayer(gameContainer) {
     gameContainer.appendChild(playerElement);
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') {
+        if (e.code === 'Space' || e.code === 'KeyW') {
+            e.preventDefault();
             jump();
         }
     });
@@ -295,11 +296,8 @@ function checkCollisions(gameInterval) {
             playerRect.bottom > grassRect.top &&
             playerRect.top < grassRect.bottom
         ) {
-            alert('You touched the grass! Game Over.');
             clearInterval(gameInterval);
-            resetPlayer();
-            player.jumpCount = 0;
-            return;
+            showGameOverMessage();
         } else {
             if (parseFloat(grass.style.left) + grassRect.width < playerRect.left) {
                 grass.setAttribute('data-cleared', 'true');
@@ -312,6 +310,31 @@ function checkCollisions(gameInterval) {
         clearInterval(gameInterval);
         levelComplete();
     }
+}
+
+function showGameOverMessage() {
+    const messageContainer = document.createElement('div');
+    messageContainer.style.position = 'fixed';
+    messageContainer.style.top = '50%';
+    messageContainer.style.left = '50%';
+    messageContainer.style.transform = 'translate(-50%, -50%)';
+    messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    messageContainer.style.color = '#fff';
+    messageContainer.style.padding = '20px';
+    messageContainer.style.borderRadius = '10px';
+    messageContainer.style.zIndex = '1000';
+    messageContainer.style.textAlign = 'center'; // Center text
+    messageContainer.innerHTML = `
+        <h2>You touched the grass!</h2>
+        <p>Game over!</p>
+        <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
+    `;
+    document.body.appendChild(messageContainer);
+
+    document.getElementById('dismiss-button').onclick = () => {
+        document.body.removeChild(messageContainer);
+        showLevelMenu(); // Navigate back to the level selection screen
+    };
 }
 
 function levelComplete() {
