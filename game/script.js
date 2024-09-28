@@ -359,12 +359,18 @@ function showGameOverMessage() {
         <h2>You touched the grass!</h2>
         <p>Game over!</p>
         <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
+        <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
     `;
     document.body.appendChild(messageContainer);
 
     document.getElementById('dismiss-button').onclick = () => {
         document.body.removeChild(messageContainer);
-        showLevelMenu(); // Navigate back to the level selection screen
+        showLevelMenu();
+    };
+
+    document.getElementById('restart-button').onclick = () => {
+        document.body.removeChild(messageContainer);
+        navigateToLevel(currentLevel)
     };
 }
 
