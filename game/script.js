@@ -1,3 +1,16 @@
+const player = {
+    x: 50,
+    y: window.innerHeight - playerHeight - 5,
+    width: 30,
+    height: playerHeight,
+    velocityY: 0,
+    gravity: 0.5,
+    jumpPower: 10,
+    jumpCount: 0,
+    moveSpeed: 4,
+};
+
+
 // global vars
 let currentPage = 0;
 const levelsPerPage = 5;
@@ -81,6 +94,12 @@ const levels = [
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight - 5) },
         { type: 'grass', x: 1400, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
+    [
+        //Level eleven: Let's speed things up a notch (;
+        { type: 'grass', x: 300, y: window.innerheight - grassHeight, width: 50, height: (grassHeight + 10) },
+        { type: 'grass', x: 700, y: window.innerheight - grassHeight, width: 60, height: (grassHeight + 10) },
+        { type: 'grass', x: 1000, y: window.innerheight - grassHeight, width: 50, height: (grassHeight + 20) },
+        const moveSpeed: 5,
     /* example block usage:
     [
         { type: 'block', x: 800, y: window.innerHeight - grassHeight, width: 60, height: 20 },
@@ -90,18 +109,6 @@ const levels = [
 ];
 
 const totalPages = Math.ceil(levels.length / levelsPerPage); // this is here cause js was being stupid asf, couldnt access levels before initialization whatever
-
-const player = {
-    x: 50,
-    y: window.innerHeight - playerHeight - 5,
-    width: 30,
-    height: playerHeight,
-    velocityY: 0,
-    gravity: 0.5,
-    jumpPower: 10,
-    jumpCount: 0,
-    moveSpeed: 4,
-};
 
 function initGame() {
     showLevelMenu();
