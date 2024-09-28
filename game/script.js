@@ -391,34 +391,48 @@ function checkCollisions(gameInterval) {
     }
 }
 
-function showGameOverMessage() {
-    const messageContainer = document.createElement('div');
-    messageContainer.style.position = 'fixed';
-    messageContainer.style.top = '50%';
-    messageContainer.style.left = '50%';
-    messageContainer.style.transform = 'translate(-50%, -50%)';
-    messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-    messageContainer.style.color = '#fff';
-    messageContainer.style.padding = '20px';
-    messageContainer.style.borderRadius = '10px';
-    messageContainer.style.zIndex = '1000';
-    messageContainer.style.textAlign = 'center'; // Center text
-    messageContainer.innerHTML = `
-        <h2>You touched the grass!</h2>
-        <p>Game over!</p>
-        <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
-        <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
-    `;
-    document.body.appendChild(messageContainer);
+function showGameOverMessage() { 
+    // idk why tf this works, but it does so aight
+
+    let existingMessageContainer = document.querySelector('div[style*="position: fixed;"]');
+    
+    if (existingMessageContainer) {
+        existingMessageContainer.innerHTML = `
+            <h2>You touched the grass!</h2>
+            <p>Game over!</p>
+            <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
+            <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
+        `;
+    } else {
+        // Create a new message container
+        existingMessageContainer = document.createElement('div');
+        existingMessageContainer.style.position = 'fixed';
+        existingMessageContainer.style.top = '50%';
+        existingMessageContainer.style.left = '50%';
+        existingMessageContainer.style.transform = 'translate(-50%, -50%)';
+        existingMessageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        existingMessageContainer.style.color = '#fff';
+        existingMessageContainer.style.padding = '20px';
+        existingMessageContainer.style.borderRadius = '10px';
+        existingMessageContainer.style.zIndex = '1000';
+        existingMessageContainer.style.textAlign = 'center';
+        existingMessageContainer.innerHTML = `
+            <h2>You touched the grass!</h2>
+            <p>Game over!</p>
+            <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
+            <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
+        `;
+        document.body.appendChild(existingMessageContainer);
+    }
 
     document.getElementById('dismiss-button').onclick = () => {
-        document.body.removeChild(messageContainer);
+        document.body.removeChild(existingMessageContainer);
         showLevelMenu();
     };
 
     document.getElementById('restart-button').onclick = () => {
-        document.body.removeChild(messageContainer);
-        navigateToLevel(currentLevel)
+        document.body.removeChild(existingMessageContainer);
+        navigateToLevel(currentLevel);
     };
 }
 
