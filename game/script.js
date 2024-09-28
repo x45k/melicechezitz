@@ -1,4 +1,4 @@
-// Global variables
+// global vars
 let currentPage = 0;
 const levelsPerPage = 5;
 let currentLevel = 0;
@@ -6,19 +6,19 @@ const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [
 const playerHeight = 30;
 const grassHeight = playerHeight - 10;
 const levels = [
-    // Level 1 with 3 obstacles
+    // level 1 with 3 obstacles
     [
         { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
-        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
+        { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
         { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 20, height: grassHeight },
     ],
-    // Level 2 with 3 obstacles
+    // level 2 with 3 obstacles
     [
         { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
         { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
         { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
     ],
-    // Level 3 with 5 obstacles
+    // level 3 with 5 obstacles
     [
         { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
         { type: 'grass', x: 750, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 5) },
@@ -26,19 +26,19 @@ const levels = [
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 10) },
         { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 40, height: grassHeight },
     ],
-    // Level 4 with 3 wide obstacles
+    // level 4 with 3 wide obstacles
     [
         { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
         { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
         { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
     ],
-    // Level 5 with 3 tall obstacles
+    // level 5 with 3 tall obstacles
     [
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
-    // Level 6 with a mix of tall and short obstacles
+    // level 6 with a mix of tall and short obstacles
     [
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 700, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
@@ -47,7 +47,7 @@ const levels = [
         { type: 'grass', x: 1800, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10)},
         { type: 'grass', x: 2200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 10) },
     ],
-    // Level 7 with more obstacles and varying heights
+    // level 7 with more obstacles and varying heights
     [
         { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 60, height: (grassHeight - 10) },
         { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 15) },
@@ -55,7 +55,7 @@ const levels = [
         { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight + 20) },
         { type: 'grass', x: 1600, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight - 15) },
     ],
-    // Level 8 with narrow gaps between tall obstacles
+    // level 8 with narrow gaps between tall obstacles
     [
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 20) },
         { type: 'grass', x: 600, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 30) },
@@ -63,7 +63,7 @@ const levels = [
         { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 25) },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 15) },
     ],
-    // Level 9 with a series of staggered obstacles
+    // level 9 with a series of staggered obstacles
     [
         { type: 'grass', x: 300, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
         { type: 'grass', x: 600, y: window.innerHeight - grassHeight, width: 60, height: (grassHeight - 5) },
@@ -71,7 +71,7 @@ const levels = [
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 20) },
         { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 15) },
     ],
-    // Level 10 with increasing obstacle density
+    // level 10 with increasing obstacle density
     [
         { type: 'grass', x: 200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 25) },
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 10) },
@@ -81,6 +81,12 @@ const levels = [
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight - 5) },
         { type: 'grass', x: 1400, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
+    /* example block usage:
+    [
+        { type: 'block', x: 800, y: window.innerHeight - grassHeight, width: 60, height: 20 },
+    ]
+    make something with it ig if you want
+    */
 ];
 
 const totalPages = Math.ceil(levels.length / levelsPerPage); // this is here cause js was being stupid asf, couldnt access levels before initialization whatever
@@ -108,6 +114,8 @@ function navigateToLevel(level) {
 }
 
 function showLevelMenu() {
+    //is there a way easier way to do this? hell yes, but im not going to make my life easy
+
     document.body.innerHTML = '';
 
     document.body.style.backgroundImage = 'url(./assets/background.png)';
@@ -229,15 +237,21 @@ function startLevel(level) {
     gameContainer.appendChild(background);
 
     levels[level].forEach(obstacle => {
-        const grass = document.createElement('img');
-        grass.src = './assets/grass-1.png';
-        grass.style.position = 'absolute';
-        grass.style.left = `${obstacle.x}px`;
-        grass.style.top = `${obstacle.y}px`;
-        grass.style.width = `${obstacle.width}px`;
-        grass.style.height = `${obstacle.height}px`;
-        grass.setAttribute('data-cleared', 'false');
-        gameContainer.appendChild(grass);
+        let obstacleElement;
+        if (obstacle.type === 'grass') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/grass-1.png';
+        } else if (obstacle.type === 'block') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/block.png';
+        }
+        obstacleElement.style.position = 'absolute';
+        obstacleElement.style.left = `${obstacle.x}px`;
+        obstacleElement.style.top = `${obstacle.y}px`;
+        obstacleElement.style.width = `${obstacle.width}px`;
+        obstacleElement.style.height = `${obstacle.height}px`;
+        obstacleElement.setAttribute('data-cleared', 'false');
+        gameContainer.appendChild(obstacleElement);
     });
 
     initPlayer(gameContainer);
@@ -256,7 +270,7 @@ function initPlayer(gameContainer) {
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space' || e.code === 'KeyW') {
-            e.preventDefault();
+            e.preventDefault(); // your welcome human being, learn how js works <3
             jump();
         }
     });
@@ -283,6 +297,36 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    obstacleElements.forEach(obstacle => {
+        const obstacleRect = obstacle.getBoundingClientRect();
+        const playerRect = {
+            left: player.x,
+            top: player.y,
+            right: player.x + player.width,
+            bottom: player.y + player.height,
+        };
+
+        if (
+            playerRect.right > obstacleRect.left &&
+            playerRect.left < obstacleRect.right &&
+            playerRect.bottom > obstacleRect.top &&
+            playerRect.top < obstacleRect.bottom
+        ) {
+            if (obstacle.src.includes('block.png')) {
+                // Player can stand on blocks
+                if (player.velocityY > 0) {
+                    player.y = obstacleRect.top - player.height;
+                    player.velocityY = 0;
+                    player.jumpCount = 0;
+                }
+            } else {
+                clearInterval(gameInterval);
+                showGameOverMessage();
+            }
+        }
+    });
+
     if (player.y > window.innerHeight - playerHeight - 5) {
         player.y = window.innerHeight - playerHeight - 5; 
         player.jumpCount = 0; 
@@ -297,23 +341,22 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     checkCollisions(gameInterval);
 }
 
-// Move obstacles to simulate player movement
 function moveObstacles(gameContainer) {
-    const grassElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"]'); 
-    grassElements.forEach(grass => {
-        const currentX = parseFloat(grass.style.left);
-        grass.style.left = `${currentX - player.moveSpeed}px`;
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    obstacleElements.forEach(obstacle => {
+        const currentX = parseFloat(obstacle.style.left);
+        obstacle.style.left = `${currentX - player.moveSpeed}px`;
 
         if (currentX < -50) {
-            grass.style.left = `${window.innerWidth + Math.random() * 200}px`;
+            obstacle.style.left = `${window.innerWidth + Math.random() * 200}px`;
         }
     });
 }
 
 function checkCollisions(gameInterval) {
-    const grassElements = document.querySelectorAll('img[src="./assets/grass-1.png"]'); 
-    grassElements.forEach(grass => {
-        const grassRect = grass.getBoundingClientRect();
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    obstacleElements.forEach(obstacle => {
+        const obstacleRect = obstacle.getBoundingClientRect();
         const playerRect = {
             left: player.x,
             top: player.y,
@@ -322,21 +365,26 @@ function checkCollisions(gameInterval) {
         };
 
         if (
-            playerRect.right > grassRect.left &&
-            playerRect.left < grassRect.right &&
-            playerRect.bottom > grassRect.top &&
-            playerRect.top < grassRect.bottom
+            playerRect.right > obstacleRect.left &&
+            playerRect.left < obstacleRect.right &&
+            playerRect.bottom > obstacleRect.top &&
+            playerRect.top < obstacleRect.bottom
         ) {
-            clearInterval(gameInterval);
-            showGameOverMessage();
+            if (obstacle.src.includes('block.png')) {
+                // Player can walk on blocks without dying
+                return;
+            } else {
+                clearInterval(gameInterval);
+                showGameOverMessage();
+            }
         } else {
-            if (parseFloat(grass.style.left) + grassRect.width < playerRect.left) {
-                grass.setAttribute('data-cleared', 'true');
+            if (parseFloat(obstacle.style.left) + obstacleRect.width < playerRect.left) {
+                obstacle.setAttribute('data-cleared', 'true');
             }
         }
     });
 
-    const allCleared = Array.from(grassElements).every(grass => grass.getAttribute('data-cleared') === 'true');
+    const allCleared = Array.from(obstacleElements).every(obstacle => obstacle.getAttribute('data-cleared') === 'true');
     if (allCleared) {
         clearInterval(gameInterval);
         levelComplete();
