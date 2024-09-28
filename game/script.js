@@ -32,20 +32,54 @@ const levels = [
         { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
         { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
     ],
+    // Level 5 with 3 tall obstacles
     [
-    //Level 5 with 3 tall obstacles
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
+    // Level 6 with a mix of tall and short obstacles
     [
-    //Level 6 with a mix of tall and short obstacles
         { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 700, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
         { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10) },
         { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5)},
         { type: 'grass', x: 1800, y: window.innerHeight - grassHeight, width: 35, height: (grassHeight + 10)},
         { type: 'grass', x: 2200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 10) },
+    ],
+    // Level 7 with more obstacles and varying heights
+    [
+        { type: 'grass', x: 500, y: window.innerHeight - grassHeight, width: 60, height: (grassHeight - 10) },
+        { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 15) },
+        { type: 'grass', x: 1100, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight - 5) },
+        { type: 'grass', x: 1300, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight + 20) },
+        { type: 'grass', x: 1600, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight - 15) },
+    ],
+    // Level 8 with narrow gaps between tall obstacles
+    [
+        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 20) },
+        { type: 'grass', x: 600, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 30) },
+        { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 20) },
+        { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 25) },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 15) },
+    ],
+    // Level 9 with a series of staggered obstacles
+    [
+        { type: 'grass', x: 300, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
+        { type: 'grass', x: 600, y: window.innerHeight - grassHeight, width: 60, height: (grassHeight - 5) },
+        { type: 'grass', x: 900, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 20) },
+        { type: 'grass', x: 1500, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 15) },
+    ],
+    // Level 10 with increasing obstacle density
+    [
+        { type: 'grass', x: 200, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 25) },
+        { type: 'grass', x: 400, y: window.innerHeight - grassHeight, width: 30, height: (grassHeight + 10) },
+        { type: 'grass', x: 600, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 15) },
+        { type: 'grass', x: 800, y: window.innerHeight - grassHeight, width: 60, height: (grassHeight - 10) },
+        { type: 'grass', x: 1000, y: window.innerHeight - grassHeight, width: 50, height: (grassHeight + 30) },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight - 5) },
+        { type: 'grass', x: 1400, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
 ];
 
@@ -99,6 +133,7 @@ function showLevelMenu() {
 
     const startLevel = currentPage * levelsPerPage;
     const endLevel = Math.min(startLevel + levelsPerPage, levels.length);
+    
     for (let i = startLevel; i < endLevel; i++) {
         const button = document.createElement('button');
         button.textContent = `Level ${i + 1}`;
@@ -120,7 +155,7 @@ function showLevelMenu() {
             button.style.transform = 'scale(1)';
         };
 
-        if (completedLevels.includes(i) || i === 0) {
+        if (i === 0 || completedLevels.includes(i - 1)) {
             button.onclick = () => navigateToLevel(i);
         } else {
             button.disabled = true;
@@ -154,7 +189,6 @@ function showLevelMenu() {
         }
     };
 
-    // Create "Next" button
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Next →';
     nextButton.style.padding = '10px 20px';
@@ -170,9 +204,6 @@ function showLevelMenu() {
             showLevelMenu();
         }
     };
-
-    prevButton.disabled = currentPage === 0;
-    nextButton.disabled = currentPage === totalPages - 1;
 
     navContainer.appendChild(prevButton);
     navContainer.appendChild(nextButton);
