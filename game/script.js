@@ -1,10 +1,12 @@
 // global vars
 let currentPage = 0;
-const levelsPerPage = 5;
 let currentLevel = 0;
+let levelToGoToAfterOk = 0;
+const levelsPerPage = 5;
 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 const playerHeight = 30;
 const grassHeight = playerHeight - 10;
+const obstacleHeight = 100;
 const levels = [
     // level 1 with 3 obstacles
     [
@@ -81,10 +83,27 @@ const levels = [
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 70, height: (grassHeight - 5) },
         { type: 'grass', x: 1400, y: window.innerHeight - grassHeight, width: 40, height: (grassHeight + 10) },
     ],
+    // level 11 which is impossible to fail rn lmao
+    [
+        { type: 'experimental' },
+        { type: 'block', x: 400, y: window.innerHeight - grassHeight, width: 60, height: 20 },
+        { type: 'expiramental-photo', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+    ],
     /* example block usage:
     [
         { type: 'block', x: 800, y: window.innerHeight - grassHeight, width: 60, height: 20 },
     ]
+    make something with it ig if you want
+    */
+   /* example expiramental usage:
+   photo:
+   [
+        { type: 'expiramental-photo', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+    ],
+    popup:
+    [
+        { type: 'experimental' },
+    ],
     make something with it ig if you want
     */
 ];
@@ -100,7 +119,7 @@ const player = {
     gravity: 0.5,
     jumpPower: 10,
     jumpCount: 0,
-    moveSpeed: 4,
+    moveSpeed: 5,
 };
 
 function initGame() {
@@ -110,7 +129,49 @@ function initGame() {
 function navigateToLevel(level) {
     currentLevel = level;
     localStorage.setItem('currentLevel', currentLevel);
-    startLevel(currentLevel);
+    
+    const isExperimental = levels[currentLevel].some(obj => obj.type === 'experimental');
+    if (isExperimental) {
+        showExperimentalPopup(currentLevel);
+    } else {
+        startLevel(currentLevel);
+    }
+}
+
+function showExperimentalPopup(levelToGoToAfterOk) {
+    const popup = document.createElement('div');
+    popup.style.position = 'fixed';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '20px';
+    popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    popup.style.color = '#fff';
+    popup.style.borderRadius = '10px';
+    popup.style.textAlign = 'center';
+    popup.style.zIndex = 1000;
+
+    const message = document.createElement('p');
+    message.textContent = "This level is experimental, meaning it is not fully done, don't complain if it has bugs.";
+    popup.appendChild(message);
+
+    const okButton = document.createElement('button');
+    okButton.textContent = 'OK';
+    okButton.style.marginTop = '10px';
+    okButton.style.padding = '10px';
+    okButton.style.backgroundColor = '#007BFF';
+    okButton.style.color = '#fff';
+    okButton.style.border = 'none';
+    okButton.style.borderRadius = '5px';
+    okButton.style.cursor = 'pointer';
+
+    okButton.onclick = () => {
+        document.body.removeChild(popup);
+        startLevel(levelToGoToAfterOk);
+    };
+
+    popup.appendChild(okButton);
+    document.body.appendChild(popup);
 }
 
 function showLevelMenu() {
@@ -236,6 +297,8 @@ function startLevel(level) {
     background.style.zIndex = '-1';
     gameContainer.appendChild(background);
 
+    // dont ask me why this works cause i have no clue
+
     levels[level].forEach(obstacle => {
         let obstacleElement;
         if (obstacle.type === 'grass') {
@@ -244,14 +307,20 @@ function startLevel(level) {
         } else if (obstacle.type === 'block') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/block.png';
+        } else if (obstacle.type === 'expiramental-photo') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/expiramental-photo.png';
         }
-        obstacleElement.style.position = 'absolute';
-        obstacleElement.style.left = `${obstacle.x}px`;
-        obstacleElement.style.top = `${obstacle.y}px`;
-        obstacleElement.style.width = `${obstacle.width}px`;
-        obstacleElement.style.height = `${obstacle.height}px`;
-        obstacleElement.setAttribute('data-cleared', 'false');
-        gameContainer.appendChild(obstacleElement);
+
+        if (obstacleElement) {
+            obstacleElement.style.position = 'absolute';
+            obstacleElement.style.left = `${obstacle.x}px`;
+            obstacleElement.style.top = `${obstacle.y}px`;
+            obstacleElement.style.width = `${obstacle.width}px`;
+            obstacleElement.style.height = `${obstacle.height}px`;
+            obstacleElement.setAttribute('data-cleared', 'false');
+            gameContainer.appendChild(obstacleElement);
+        }
     });
 
     initPlayer(gameContainer);
@@ -297,7 +366,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
         const playerRect = {
@@ -314,12 +383,13 @@ function updateGame(playerElement, gameContainer, gameInterval) {
             playerRect.top < obstacleRect.bottom
         ) {
             if (obstacle.src.includes('block.png')) {
-                // Player can stand on blocks
                 if (player.velocityY > 0) {
                     player.y = obstacleRect.top - player.height;
                     player.velocityY = 0;
                     player.jumpCount = 0;
                 }
+            } else if (obstacle.src.includes('expiramental-photo.png')) {
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -342,7 +412,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
         obstacle.style.left = `${currentX - player.moveSpeed}px`;
@@ -354,7 +424,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
         const playerRect = {
@@ -371,7 +441,8 @@ function checkCollisions(gameInterval) {
             playerRect.top < obstacleRect.bottom
         ) {
             if (obstacle.src.includes('block.png')) {
-                // Player can walk on blocks without dying
+                return;
+            } if (obstacle.src.includes('expiramental-photo.png')) {
                 return;
             } else {
                 clearInterval(gameInterval);
@@ -404,7 +475,6 @@ function showGameOverMessage() {
             <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
         `;
     } else {
-        // Create a new message container
         existingMessageContainer = document.createElement('div');
         existingMessageContainer.style.position = 'fixed';
         existingMessageContainer.style.top = '50%';
