@@ -1,3 +1,5 @@
+import level14 from './levels/level14.js';
+
 // global vars
 let currentPage = 0;
 let currentLevel = 0;
@@ -94,6 +96,13 @@ const levels = [
         { type: 'experimental' },
         { type: 'moving-grass', bottomY: 400, topY: 200, width: 50, height: 20, x: 500, y: window.innerHeight - grassHeight },
     ],
+    // level 13 which introduces blue potions which increase player speed
+    [
+        { type: 'experimental' },
+        { type: 'blue-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+    ],
+    // level 14 which soley exists to show how to import levels from other files if you want to
+    level14,
     /* example block usage:
     [
         { type: 'block', x: 800, y: window.innerHeight - grassHeight, width: 60, height: 20 },
@@ -116,6 +125,11 @@ const levels = [
         { type: 'moving-grass', bottomY: 400, topY: 200, width: 50, height: 20, x: 500, y: window.innerHeight - grassHeight },
     ],
    */
+  /* example blue potion usage:
+  [
+        { type: 'blue-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 70 },
+    ]
+    make something with it ig if you want*/
 ];
 
 const totalPages = Math.ceil(levels.length / levelsPerPage); // this is here cause js was being stupid asf, couldnt access levels before initialization whatever
@@ -222,34 +236,35 @@ function showLevelMenu() {
         button.style.borderRadius = '12px';
         button.style.fontSize = '20px';
         button.style.fontFamily = 'Poppins, sans-serif';
-        button.style.backgroundColor = '#007BFF';
-        button.style.color = '#fff';
-        button.style.border = 'none';
-        button.style.boxShadow = '0 8px 15px rgba(0, 123, 255, 0.2)';
-        button.style.cursor = 'pointer';
-        button.style.transition = 'all 0.3s ease';
-
-        button.onmouseover = () => {
-            button.style.backgroundColor = '#0056b3';
-            button.style.boxShadow = '0 12px 25px rgba(0, 86, 179, 0.3)';
-            button.style.transform = 'translateY(-3px)';
-        };
-        button.onmouseout = () => {
-            button.style.backgroundColor = '#007BFF';
-            button.style.boxShadow = '0 8px 15px rgba(0, 123, 255, 0.2)';
-            button.style.transform = 'translateY(0)';
-        };
-
+        
         if (i === 0 || completedLevels.includes(i - 1)) {
+            button.style.backgroundColor = '#007BFF';
+            button.style.cursor = 'pointer';
+            button.style.boxShadow = '0 8px 15px rgba(0, 123, 255, 0.2)';
+    
+            button.onmouseover = () => {
+                button.style.backgroundColor = '#0056b3';
+                button.style.boxShadow = '0 12px 25px rgba(0, 86, 179, 0.3)';
+                button.style.transform = 'translateY(-3px)';
+            };
+            button.onmouseout = () => {
+                button.style.backgroundColor = '#007BFF';
+                button.style.boxShadow = '0 8px 15px rgba(0, 123, 255, 0.2)';
+                button.style.transform = 'translateY(0)';
+            };
+            
             button.onclick = () => navigateToLevel(i);
         } else {
-            button.disabled = true;
             button.style.backgroundColor = '#888';
             button.style.cursor = 'not-allowed';
+            button.disabled = true;
+    
+            button.onmouseover = null;
+            button.onmouseout = null;
         }
-
+    
         levelsContainer.appendChild(button);
-    }
+    }    
 
     const navContainer = document.createElement('div');
     navContainer.style.display = 'flex';
@@ -317,7 +332,7 @@ function showLevelMenu() {
         settingsButton.style.transform = 'scale(1)';
     };
     document.body.appendChild(settingsButton);
-
+    
     const backgroundOverlay = document.createElement('div');
     backgroundOverlay.style.position = 'fixed';
     backgroundOverlay.style.top = '0';
@@ -329,7 +344,7 @@ function showLevelMenu() {
     backgroundOverlay.style.transition = 'opacity 0.5s ease';
     backgroundOverlay.style.display = 'none';
     document.body.appendChild(backgroundOverlay);
-
+    
     const settingsMenu = document.createElement('div');
     settingsMenu.style.position = 'absolute';
     settingsMenu.style.top = '50%';
@@ -340,19 +355,44 @@ function showLevelMenu() {
     settingsMenu.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.3)';
     settingsMenu.style.padding = '25px';
     settingsMenu.style.width = '350px';
+    settingsMenu.style.maxHeight = '400px';
+    settingsMenu.style.overflowY = 'auto';
     settingsMenu.style.opacity = '0';
     settingsMenu.style.transition = 'opacity 0.5s ease';
     settingsMenu.style.pointerEvents = 'none';
     document.body.appendChild(settingsMenu);
-
-    function createSwitch(labelText, description, switchKey, defaultState) {
-        // god save me that was painful
-
+    
+    let currentContextMenu = null;
+    
+    function saveSwitchValue(key, value) {
+        localStorage.setItem(key, value);
+    }
+    
+    function loadSwitchValue(key) {
+        return localStorage.getItem(key);
+    }
+    
+    function createCategory(title) {
+        const categoryContainer = document.createElement('div');
+        categoryContainer.style.marginBottom = '30px';
+    
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.textContent = title;
+        categoryTitle.style.fontFamily = 'Poppins, sans-serif';
+        categoryTitle.style.fontSize = '20px';
+        categoryTitle.style.marginBottom = '10px';
+        categoryContainer.appendChild(categoryTitle);
+    
+        settingsMenu.appendChild(categoryContainer);
+        return categoryContainer;
+    }
+    
+    function createSwitch(labelText, description, switchKey, defaultState, categoryContainer, additionalSwitches = []) {
         const switchContainer = document.createElement('div');
         switchContainer.style.display = 'flex';
         switchContainer.style.alignItems = 'center';
         switchContainer.style.marginBottom = '20px';
-
+    
         const label = document.createElement('label');
         label.textContent = labelText;
         label.style.fontFamily = 'Poppins, sans-serif';
@@ -360,64 +400,183 @@ function showLevelMenu() {
         label.style.marginRight = 'auto';
         label.title = description;
         label.style.cursor = 'default';
-
+    
         const sliderContainer = document.createElement('div');
         sliderContainer.style.position = 'relative';
         sliderContainer.style.width = '40px';
         sliderContainer.style.height = '20px';
         sliderContainer.style.borderRadius = '10px';
-        sliderContainer.style.backgroundColor = '#555';
         sliderContainer.style.cursor = 'pointer';
         sliderContainer.style.transition = 'background-color 0.3s';
-
+    
         const slider = document.createElement('div');
         slider.style.position = 'absolute';
         slider.style.height = '16px';
         slider.style.width = '16px';
         slider.style.borderRadius = '50%';
         slider.style.backgroundColor = '#fff';
-        slider.style.left = defaultState === 'enabled' ? '24px' : '2px';
-        slider.style.top = '2px';
         slider.style.transition = 'left 0.3s';
-        sliderContainer.appendChild(slider);
-
+    
         const isEnabled = loadSwitchValue(switchKey) !== null ? loadSwitchValue(switchKey) === 'true' : defaultState === 'enabled';
         slider.style.left = isEnabled ? '24px' : '2px';
         sliderContainer.style.backgroundColor = isEnabled ? '#4CAF50' : '#555';
-
+    
         sliderContainer.onclick = () => {
             const currentState = slider.style.left === '24px';
-            slider.style.left = currentState ? '2px' : '24px';
-            sliderContainer.style.backgroundColor = currentState ? '#555' : '#4CAF50';
-            saveSwitchValue(switchKey, !currentState);
+            const targetPosition = currentState ? '2px' : '24px';
+            const targetColor = currentState ? '#555' : '#4CAF50';
+    
+            slider.style.transition = 'left 0.3s';
+            slider.style.left = targetPosition;
+    
+            sliderContainer.style.transition = 'background-color 0.3s';
+            sliderContainer.style.backgroundColor = targetColor;
+    
+            setTimeout(() => {
+                saveSwitchValue(switchKey, !currentState);
+            }, 300);
         };
-
+    
+        switchContainer.oncontextmenu = (event) => {
+            event.preventDefault();
+            openContextMenu(event.clientX, event.clientY, additionalSwitches);
+        };
+    
+        sliderContainer.appendChild(slider);
         switchContainer.appendChild(label);
         switchContainer.appendChild(sliderContainer);
-        settingsMenu.appendChild(switchContainer);
+        categoryContainer.appendChild(switchContainer);
     }
-
+    
+    function openContextMenu(x, y, additionalSwitches) {
+        if (currentContextMenu) {
+            currentContextMenu.remove();
+        }
+    
+        const contextMenu = document.createElement('div');
+        contextMenu.style.position = 'absolute';
+        contextMenu.style.top = `${y}px`;
+        contextMenu.style.left = `${x}px`;
+        contextMenu.style.backgroundColor = '#fff';
+        contextMenu.style.borderRadius = '10px';
+        contextMenu.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
+        contextMenu.style.padding = '10px';
+        contextMenu.style.zIndex = '1000';
+    
+        additionalSwitches.forEach(({ label, description, key, defaultState }) => {
+            const switchDiv = document.createElement('div');
+            switchDiv.style.display = 'flex';
+            switchDiv.style.alignItems = 'center';
+            switchDiv.style.marginBottom = '10px';
+    
+            const featureLabel = document.createElement('label');
+            featureLabel.textContent = label;
+            featureLabel.title = description;
+            featureLabel.style.cursor = 'default';
+    
+            const featureSliderContainer = document.createElement('div');
+            featureSliderContainer.style.position = 'relative';
+            featureSliderContainer.style.width = '40px';
+            featureSliderContainer.style.height = '20px';
+            featureSliderContainer.style.borderRadius = '10px';
+            featureSliderContainer.style.cursor = 'pointer';
+            featureSliderContainer.style.transition = 'background-color 0.3s';
+    
+            const featureEnabled = loadSwitchValue(key) !== null ? loadSwitchValue(key) === 'true' : defaultState === 'enabled';
+            const featureSlider = document.createElement('div');
+            featureSlider.style.position = 'absolute';
+            featureSlider.style.height = '16px';
+            featureSlider.style.width = '16px';
+            featureSlider.style.borderRadius = '50%';
+            featureSlider.style.backgroundColor = '#fff';
+            featureSlider.style.transition = 'left 0.3s';
+    
+            featureSliderContainer.style.backgroundColor = featureEnabled ? '#4CAF50' : '#555';
+            featureSlider.style.left = featureEnabled ? '24px' : '2px';
+    
+            featureSliderContainer.onclick = () => {
+                const currentState = featureSlider.style.left === '24px';
+                const targetPosition = currentState ? '2px' : '24px';
+                const targetColor = currentState ? '#555' : '#4CAF50';
+    
+                featureSlider.style.transition = 'left 0.3s';
+                featureSlider.style.left = targetPosition;
+    
+                featureSliderContainer.style.transition = 'background-color 0.3s';
+                featureSliderContainer.style.backgroundColor = targetColor;
+    
+                setTimeout(() => {
+                    saveSwitchValue(key, !currentState);
+                }, 300);
+            };
+    
+            featureSliderContainer.appendChild(featureSlider);
+            switchDiv.appendChild(featureLabel);
+            switchDiv.appendChild(featureSliderContainer);
+            contextMenu.appendChild(switchDiv);
+        });
+    
+        document.body.appendChild(contextMenu);
+        currentContextMenu = contextMenu;
+    
+        const closeContextMenu = (event) => {
+            if (!contextMenu.contains(event.target)) {
+                contextMenu.remove();
+                currentContextMenu = null;
+                document.removeEventListener('click', closeContextMenu);
+            }
+        };
+    
+        document.addEventListener('click', closeContextMenu);
+    }    
+    
     function closeSettingsMenu() {
         settingsMenu.style.opacity = '0';
+        settingsMenu.style.pointerEvents = 'none';
         backgroundOverlay.style.opacity = '0';
         setTimeout(() => {
-            settingsMenu.style.pointerEvents = 'none';
+            settingsMenu.style.display = 'none';
             backgroundOverlay.style.display = 'none';
         }, 500);
     }
+    
+    let switchesLoaded = false;
 
     settingsButton.onclick = () => {
-        backgroundOverlay.style.display = 'block';
-        settingsMenu.style.pointerEvents = 'auto';
-        settingsMenu.style.opacity = '1';
-        backgroundOverlay.style.opacity = '1';
+        if (settingsMenu.style.display === 'none' || settingsMenu.style.display === '') {
+            settingsMenu.style.display = 'block';
+            backgroundOverlay.style.display = 'block';
+            settingsMenu.style.opacity = '1';
+            backgroundOverlay.style.opacity = '1';
+            settingsMenu.style.pointerEvents = 'auto';
 
-        settingsMenu.innerHTML = '';
-        createSwitch('Enable Moving Grass (BUGGY)', `Enables moving grass animation. ${loadSwitchValue('byeSwitchValue')}`, 'byeSwitchValue', 'disabled');
-        createSwitch('hi', `hello. this has no use, so feel free to click it as much as youd like. ${loadSwitchValue('exampleSwitchValue')}`, 'exampleSwitchValue', 'enabled');
+            if (!switchesLoaded) {
+                loadSwitches();
+                switchesLoaded = true;
+            }
+        } else {
+            closeSettingsMenu();
+        }
     };
 
-    backgroundOverlay.onclick = closeSettingsMenu;
+    function loadSwitches() {
+        /* example sub switch system thingy thingy thing: 
+        createSwitch('title', 'description.', 'switchvalue', 'disabled', switchcategory, [
+            { label: 'sub switch 1', description: 'description', key: 'subswitchvalue', defaultState: 'disabled' }
+        ]);*/
+        const firstCategory = createCategory('Graphics Settings');
+        createSwitch('Enable Moving Grass (BUGGY)', 'Enables moving grass', 'byeSwitchValue', 'disabled', firstCategory);
+
+        const secondCategory = createCategory('Audio Settings');
+        createSwitch('Enable Music', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
+            { label: 'All Sounds', description: 'Enable/disable all sounds in the game', key: 'allSoundsSwitchValue', defaultState: 'disabled' }
+        ]);
+
+        const thirdCategory = createCategory('Miscellaneous Settings');
+        createSwitch('hi', 'hello, this does absolutely nothing', 'hiSwitchValue', 'enabled', thirdCategory);
+    }
+    
+    backgroundOverlay.onclick = closeSettingsMenu;  
 }
 
 function saveSwitchValue(key, value) {
@@ -473,6 +632,9 @@ function startLevel(level) {
         } else if (obstacle.type === 'expiramental-photo') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/expiramental-photo.png';
+        } else if (obstacle.type === 'blue-potion') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/blue-potion.png';
         }
 
         if (obstacleElement) {
@@ -560,7 +722,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
     
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -584,6 +746,12 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                     player.jumpCount = 0;
                 }
             } else if (obstacle.src.includes('expiramental-photo.png')) {
+                return;
+            } else if (obstacle.src.includes('blue-potion.png')) {
+                player.moveSpeed = 8;
+                setTimeout(() => {
+                    player.moveSpeed = 5;
+                }, 3000);
                 return;
             } else {
                 clearInterval(gameInterval);
@@ -629,7 +797,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
         obstacle.style.left = `${currentX - player.moveSpeed}px`;
@@ -641,7 +809,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
         const playerRect = {
@@ -660,6 +828,8 @@ function checkCollisions(gameInterval) {
             if (obstacle.src.includes('block.png')) {
                 return;
             } if (obstacle.src.includes('expiramental-photo.png')) {
+                return;
+            } if (obstacle.src.includes('blue-potion.png')) {
                 return;
             } else {
                 clearInterval(gameInterval);
