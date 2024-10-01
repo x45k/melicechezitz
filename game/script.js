@@ -4,6 +4,7 @@ import level14 from './levels/level14.js';
 let currentPage = 0;
 let currentLevel = 0;
 let levelToGoToAfterOk = 0;
+let activeObstacles = [];
 const levelsPerPage = 5;
 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 const playerHeight = 30;
@@ -798,18 +799,21 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 
 function moveObstacles(gameContainer) {
     const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
         obstacle.style.left = `${currentX - player.moveSpeed}px`;
 
         if (currentX < -50) {
-            obstacle.style.left = `${window.innerWidth + Math.random() * 200}px`;
+            obstacle.style.display = 'none';
+            activeObstacles = activeObstacles.filter(item => item !== obstacle);
         }
     });
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
         const playerRect = {
@@ -818,7 +822,7 @@ function checkCollisions(gameInterval) {
             right: player.x + player.width,
             bottom: player.y + player.height,
         };
-
+    
         if (
             playerRect.right > obstacleRect.left &&
             playerRect.left < obstacleRect.right &&
@@ -827,9 +831,11 @@ function checkCollisions(gameInterval) {
         ) {
             if (obstacle.src.includes('block.png')) {
                 return;
-            } if (obstacle.src.includes('expiramental-photo.png')) {
+            }
+            if (obstacle.src.includes('expiramental-photo.png')) {
                 return;
-            } if (obstacle.src.includes('blue-potion.png')) {
+            }
+            if (obstacle.src.includes('blue-potion.png')) {
                 return;
             } else {
                 clearInterval(gameInterval);
@@ -838,6 +844,8 @@ function checkCollisions(gameInterval) {
         } else {
             if (parseFloat(obstacle.style.left) + obstacleRect.width < playerRect.left) {
                 obstacle.setAttribute('data-cleared', 'true');
+                obstacle.style.display = 'none';
+                activeObstacles.push(obstacle);
             }
         }
     });
@@ -848,6 +856,10 @@ function checkCollisions(gameInterval) {
         levelComplete();
     }
 }
+
+document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]').forEach(obstacle => {
+    activeObstacles.push(obstacle);
+});
 
 function showGameOverMessage() { 
     // idk why tf this works, but it does so aight
