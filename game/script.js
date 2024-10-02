@@ -106,7 +106,7 @@ const levels = [
     level14,
     [
         { type: 'experimental' },
-        { type: 'blue-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+        { type: 'yellow-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 85, height: (grassHeight + 10) },
     ],
     /* example block usage:
@@ -641,6 +641,9 @@ function startLevel(level) {
         } else if (obstacle.type === 'blue-potion') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/blue-potion.png';
+        } else if (obstacle.type === 'yellow-potion') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/yellow-potion.png';
         }
 
         if (obstacleElement) {
@@ -728,7 +731,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"] , img[src="./assets/yellow-potion.png"]');
     
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -755,6 +758,12 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                 return;
             } else if (obstacle.src.includes('blue-potion.png')) {
                 player.moveSpeed = 8;
+                setTimeout(() => {
+                    player.moveSpeed = 5;
+                }, 3000);
+                return;
+            } else if (obstacle.src.includes('yellow-potion.png')) {
+                player.moveSpeed = 3;
                 setTimeout(() => {
                     player.moveSpeed = 5;
                 }, 3000);
@@ -817,7 +826,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"]');
     
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -842,6 +851,9 @@ function checkCollisions(gameInterval) {
             }
             if (obstacle.src.includes('blue-potion.png')) {
                 return;
+            }
+            if (obstacle.src.includes('yellow-potion.png')) {
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -862,7 +874,7 @@ function checkCollisions(gameInterval) {
     }
 }
 
-document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]').forEach(obstacle => {
+document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"]').forEach(obstacle => {
     activeObstacles.push(obstacle);
 });
 
