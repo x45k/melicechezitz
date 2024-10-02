@@ -812,7 +812,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"]');
     
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
