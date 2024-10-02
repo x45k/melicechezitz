@@ -766,7 +766,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                 player.moveSpeed = 3;
                 setTimeout(() => {
                     player.moveSpeed = 5;
-                }, 3000);
+                }, 6000);
                 return;
             } else {
                 clearInterval(gameInterval);
