@@ -104,6 +104,11 @@ const levels = [
     ],
     // level 14 which soley exists to show how to import levels from other files if you want to
     level14,
+    [
+        { type: 'experimental' },
+        { type: 'blue-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+        { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 85, height: (grassHeight + 10) },
+    ],
     /* example block usage:
     [
         { type: 'block', x: 800, y: window.innerHeight - grassHeight, width: 60, height: 20 },
