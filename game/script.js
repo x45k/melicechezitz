@@ -752,7 +752,7 @@ function jump() {
 }
 
 function jump2() {
-    if (player.jumpCount < 1) { 
+    if (player.jumpCount < 2) { 
         player.velocityY = -player.jumpPower; 
         player.jumpCount++;
     }
