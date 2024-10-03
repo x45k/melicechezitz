@@ -106,7 +106,7 @@ const levels = [
     level14,
     [
         { type: 'experimental' },
-        { type: 'black-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+        { type: 'yellow-orb', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 85, height: (grassHeight + 10) },
     ],
     /* example block usage:
@@ -665,6 +665,9 @@ function startLevel(level) {
         } else if (obstacle.type === 'black-potion') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/black-potion.png';
+        } else if (obstacle.type === 'yellow-orb') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/yellow-orb.png';
         }
 
         if (obstacleElement) {
@@ -752,7 +755,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
     
     let collidedObstacles = [];
     obstacleElements.forEach(obstacle => {
@@ -799,6 +802,14 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                     player.gravity = -player.gravity;
                     playerElement.style.transform = 'rotate(0deg)';
                 }, 3000);
+                return;
+            } else if (obstacle.src.includes('yellow-orb.png')) {
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') {
+                        e.preventDefault();
+                        jump();
+                    }
+                });
                 return;
             } else {
                 clearInterval(gameInterval);
@@ -850,7 +861,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
     
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
@@ -864,7 +875,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
     
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -898,6 +909,9 @@ function checkCollisions(gameInterval) {
             }
             if (obstacle.src.includes('black-potion.png')) {
                 return;
+            }
+            if (obstacle.src.includes('yellow-orb.png')) {
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -918,7 +932,7 @@ function checkCollisions(gameInterval) {
     }
 }
 
-document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"]').forEach(obstacle => {
+document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]').forEach(obstacle => {
     activeObstacles.push(obstacle);
 });
 
