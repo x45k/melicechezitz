@@ -587,6 +587,7 @@ function showLevelMenu() {
         ]);*/
         const firstCategory = createCategory('Graphics Settings');
         createSwitch('Enable Moving Grass (BUGGY)', 'Enables moving grass', 'byeSwitchValue', 'disabled', firstCategory);
+        createSwitch('Enable Double Jump Orbs (BUGGY)', 'Enables double jump orbs', 'doubleJumpOrbsSwitchValue', 'enabled', firstCategory);
 
         const secondCategory = createCategory('Audio Settings');
         createSwitch('Enable Music', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
@@ -610,6 +611,7 @@ function loadSwitchValue(key) {
 
 function startLevel(level) {
     const byeSwitchValue = loadSwitchValue('byeSwitchValue') === 'true';
+    const doubleJumpOrbsSwitchValue = loadSwitchValue('doubleJumpOrbsSwitchValue') === 'true';
 
     document.body.innerHTML = '';
     document.body.style.userSelect = 'none';
@@ -665,9 +667,11 @@ function startLevel(level) {
         } else if (obstacle.type === 'black-potion') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/black-potion.png';
-        } else if (obstacle.type === 'yellow-orb') {
-            obstacleElement = document.createElement('img');
-            obstacleElement.src = './assets/yellow-orb.png';
+        } else if (obstacle.type === 'yellow-orb') 
+            if (doubleJumpOrbsSwitchValue) {
+                obstacleElement = document.createElement('img');
+                obstacleElement.src = './assets/yellow-orb.png';
+            }
         }
 
         if (obstacleElement) {
