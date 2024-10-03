@@ -667,7 +667,7 @@ function startLevel(level) {
         } else if (obstacle.type === 'black-potion') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/black-potion.png';
-        } else if (obstacle.type === 'yellow-orb') 
+        } else if (obstacle.type === 'yellow-orb') {
             if (doubleJumpOrbsSwitchValue) {
                 obstacleElement = document.createElement('img');
                 obstacleElement.src = './assets/yellow-orb.png';
