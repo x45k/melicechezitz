@@ -751,6 +751,13 @@ function jump() {
     }
 }
 
+function jump2() {
+    if (player.jumpCount < 1) { 
+        player.velocityY = -player.jumpPower; 
+        player.jumpCount++;
+    }
+}
+
 function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
@@ -807,7 +814,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                 document.addEventListener('keydown', (e) => {
                     if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') {
                         e.preventDefault();
-                        jump();
+                        jump2();
                     }
                 });
                 return;
