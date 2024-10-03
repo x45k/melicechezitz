@@ -611,6 +611,7 @@ function loadSwitchValue(key) {
 
 function startLevel(level) {
     const byeSwitchValue = loadSwitchValue('byeSwitchValue') === 'true';
+    const doubleJumpOrbsSwitchValue = loadSwitchValue('doubleJumpOrbsSwitchValue') === 'true';
 
     document.body.innerHTML = '';
     document.body.style.userSelect = 'none';
@@ -667,8 +668,10 @@ function startLevel(level) {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/black-potion.png';
         } else if (obstacle.type === 'yellow-orb') {
-            obstacleElement = document.createElement('img');
-            obstacleElement.src = './assets/yellow-orb.png';
+            if (doubleJumpOrbsSwitchValue) {
+                obstacleElement = document.createElement('img');
+                obstacleElement.src = './assets/yellow-orb.png';
+            }
         }
 
         if (obstacleElement) {
