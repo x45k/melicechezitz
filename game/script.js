@@ -587,7 +587,7 @@ function showLevelMenu() {
         ]);*/
         const firstCategory = createCategory('Graphics Settings');
         createSwitch('Enable Moving Grass (BUGGY)', 'Enables moving grass', 'byeSwitchValue', 'disabled', firstCategory);
-        createSwitch('Enable Double Jump Orbs (BUGGY)', 'Enables double jump orbs', 'doubleJumpOrbsSwitchValue', 'enabled', firstCategory);
+        createSwitch('Enable Jump Orbs (BUGGY)', 'Enables double jump orbs', 'doubleJumpOrbsSwitchValue', 'enabled', firstCategory);
 
         const secondCategory = createCategory('Audio Settings');
         createSwitch('Enable Music', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
