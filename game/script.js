@@ -817,7 +817,6 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                         jump2();
                     }
                 });
-                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
