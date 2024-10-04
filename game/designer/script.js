@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exportButton.addEventListener("click", () => {
             const exportLines = grassIcons.map(icon => {
                 const { offsetLeft: x, offsetHeight: height } = icon;
-                return `{ type: 'grass', x: ${x}, y: window.innerHeight - ${height}, width: ${icon.offsetWidth}, height: ${height} }`;
+                return `{ type: 'grass', x: ${x}, y: window.innerHeight - ${height}, width: ${icon.offsetWidth}, height: ${height} },`;
             }).join('\n');
 
             console.log(exportLines);
