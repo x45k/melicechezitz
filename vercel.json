@@ -3,6 +3,10 @@
       {
         "source": "/game",
         "destination": "/game/index.html"
+      },
+      {
+        "source": "/game/designer",
+        "destination": "/game/designer/index.html"
       }
     ]
   }
