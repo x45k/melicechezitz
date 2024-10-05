@@ -5,6 +5,8 @@ let currentPage = 0;
 let currentLevel = 0;
 let levelToGoToAfterOk = 0;
 let activeObstacles = [];
+let totalCash = 0;
+let purchasedItems = [];
 const levelsPerPage = 5;
 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 const playerHeight = 30;
@@ -334,6 +336,185 @@ function showLevelMenu() {
 
     navContainer.appendChild(prevButton);
     navContainer.appendChild(nextButton);
+
+    const shopButton = document.createElement('button');
+    shopButton.textContent = '🏪';
+    shopButton.style.position = 'absolute';
+    shopButton.style.top = '20px';
+    shopButton.style.right = '60px';
+    shopButton.style.fontSize = '30px';
+    shopButton.style.cursor = 'pointer';
+    shopButton.style.backgroundColor = 'transparent';
+    shopButton.style.color = '#fff';
+    shopButton.style.border = 'none';
+    shopButton.style.transition = 'transform 0.3s ease';
+    
+    shopButton.onmouseover = () => {
+        shopButton.style.transform = 'scale(1.2)';
+    };
+    shopButton.onmouseout = () => {
+        shopButton.style.transform = 'scale(1)';
+    };
+    
+    function showShopMenu() {
+        const shopOverlay = document.createElement('div');
+        shopOverlay.style.position = 'fixed';
+        shopOverlay.style.top = '0';
+        shopOverlay.style.left = '0';
+        shopOverlay.style.width = '100%';
+        shopOverlay.style.height = '100%';
+        shopOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.6)';
+        shopOverlay.style.display = 'flex';
+        shopOverlay.style.justifyContent = 'center';
+        shopOverlay.style.alignItems = 'center';
+        document.body.appendChild(shopOverlay);
+    
+        const shopMenu = document.createElement('div');
+        shopMenu.style.backgroundColor = '#fff';
+        shopMenu.style.borderRadius = '20px';
+        shopMenu.style.padding = '30px';
+        shopMenu.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.3)';
+        shopMenu.style.fontFamily = 'Poppins, sans-serif';
+        shopMenu.style.textAlign = 'center';
+        shopMenu.style.width = '400px';
+    
+        const tabContainer = document.createElement('div');
+        tabContainer.style.display = 'flex';
+        tabContainer.style.justifyContent = 'center';
+        tabContainer.style.marginBottom = '20px';
+    
+        const marketplaceTab = document.createElement('button');
+        marketplaceTab.textContent = 'Marketplace';
+        marketplaceTab.style.flex = '1';
+        marketplaceTab.style.padding = '10px';
+        marketplaceTab.style.borderBottom = '2px solid #000';
+        marketplaceTab.style.cursor = 'pointer';
+        tabContainer.appendChild(marketplaceTab);
+    
+        const purchasedTab = document.createElement('button');
+        purchasedTab.textContent = 'Purchased';
+        purchasedTab.style.flex = '1';
+        purchasedTab.style.padding = '10px';
+        purchasedTab.style.cursor = 'pointer';
+        tabContainer.appendChild(purchasedTab);
+    
+        shopMenu.appendChild(tabContainer);
+    
+        const tabContent = document.createElement('div');
+        tabContent.style.minHeight = '200px';
+        shopMenu.appendChild(tabContent);
+    
+        function showMarketplace() {
+            tabContent.innerHTML = '';
+            const cashMessage = document.createElement('p');
+            cashMessage.textContent = `Cash: $${totalCash}`;
+            cashMessage.style.fontSize = '20px';
+            cashMessage.style.marginBottom = '20px';
+            tabContent.appendChild(cashMessage);
+    
+            const playerImage = document.createElement('img');
+            playerImage.src = './assets/player.png';
+            playerImage.style.width = '100px';
+            playerImage.style.cursor = 'pointer';
+            playerImage.style.marginBottom = '10px';
+            tabContent.appendChild(playerImage);
+    
+            playerImage.onclick = () => {
+                const confirmMessage = document.createElement('p');
+                confirmMessage.textContent = 'Are you sure you want to buy this for $0?';
+                confirmMessage.style.marginTop = '20px';
+                tabContent.appendChild(confirmMessage);
+    
+                const confirmButton = document.createElement('button');
+                confirmButton.textContent = 'OK';
+                confirmButton.style.marginTop = '10px';
+                confirmButton.style.padding = '10px 20px';
+                confirmButton.style.backgroundColor = '#28a745';
+                confirmButton.style.color = '#fff';
+                confirmButton.style.border = 'none';
+                confirmButton.style.borderRadius = '5px';
+                confirmButton.style.cursor = 'pointer';
+    
+                confirmButton.onclick = () => {
+                    if (totalCash >= 0) {
+                        purchasedItems.push({
+                            name: 'Player Image', 
+                            src: './assets/player.png' 
+                        }); 
+                        totalCash -= 0; 
+                        cashMessage.textContent = `Cash: $${totalCash}`;
+                    }
+                    confirmMessage.remove();
+                    confirmButton.remove();
+                };
+    
+                tabContent.appendChild(confirmButton);
+            };
+        }
+    
+        function showPurchased() {
+            tabContent.innerHTML = '';
+    
+            const purchasedTitle = document.createElement('p');
+            purchasedTitle.textContent = 'Purchased Items:';
+            purchasedTitle.style.fontSize = '20px';
+            purchasedTitle.style.marginBottom = '10px';
+            tabContent.appendChild(purchasedTitle);
+    
+            if (purchasedItems.length === 0) {
+                const noItemsMessage = document.createElement('p');
+                noItemsMessage.textContent = 'No items purchased yet.';
+                noItemsMessage.style.fontSize = '16px';
+                noItemsMessage.style.color = '#666';
+                tabContent.appendChild(noItemsMessage);
+            } else {
+                purchasedItems.forEach(item => {
+                    const purchasedItemContainer = document.createElement('div');
+                    purchasedItemContainer.style.display = 'flex';
+                    purchasedItemContainer.style.alignItems = 'center';
+                    purchasedItemContainer.style.marginTop = '10px';
+    
+                    const purchasedItemImage = document.createElement('img');
+                    purchasedItemImage.src = item.src;
+                    purchasedItemImage.style.width = '50px';
+                    purchasedItemImage.style.marginRight = '10px';
+    
+                    const purchasedItemName = document.createElement('p');
+                    purchasedItemName.textContent = item.name;
+                    purchasedItemName.style.fontSize = '18px';
+    
+                    purchasedItemContainer.appendChild(purchasedItemImage);
+                    purchasedItemContainer.appendChild(purchasedItemName);
+                    tabContent.appendChild(purchasedItemContainer);
+                });
+            }
+        }
+    
+        showMarketplace();
+    
+        marketplaceTab.onclick = () => {
+            marketplaceTab.style.borderBottom = '2px solid #000';
+            purchasedTab.style.borderBottom = 'none';
+            showMarketplace();
+        };
+    
+        purchasedTab.onclick = () => {
+            purchasedTab.style.borderBottom = '2px solid #000';
+            marketplaceTab.style.borderBottom = 'none';
+            showPurchased();
+        };
+    
+        shopOverlay.appendChild(shopMenu);
+    
+        shopOverlay.onclick = (e) => {
+            if (e.target === shopOverlay) {
+                shopOverlay.remove();
+            }
+        };
+    }
+    
+    shopButton.onclick = showShopMenu;
+    document.body.appendChild(shopButton);
 
     const settingsButton = document.createElement('button');
     settingsButton.textContent = '⚙';
@@ -992,6 +1173,14 @@ function showGameOverMessage() {
 }
 
 function levelComplete() {
+    if (currentLevel === 1) {
+        totalCash += 10;
+    }
+
+    if (currentLevel >= 2) {
+        totalCash += 10 + (currentLevel * 5);
+    }
+
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
     overlay.style.top = '0';
