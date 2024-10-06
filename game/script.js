@@ -108,7 +108,7 @@ const levels = [
     level14,
     [
         { type: 'experimental' },
-        { type: 'yellow-orb', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+        { type: 'intoship', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 85, height: (grassHeight + 10) },
     ],
     /* example block usage:
@@ -151,6 +151,11 @@ const levels = [
   /* example black potion usage:
   [
         { type: 'black-potion', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 70 },
+    ]
+    make something with it ig if you want*/
+    /* example yellow orb that isnt yellow usage:
+    [
+        { type: 'yellow-orb', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
     ]
     make something with it ig if you want*/
 ];
@@ -772,12 +777,13 @@ function showLevelMenu() {
         createSwitch('Enable Jump Orbs (BUGGY)', 'Enables double jump orbs', 'doubleJumpOrbsSwitchValue', 'enabled', firstCategory);
 
         const secondCategory = createCategory('Audio Settings');
-        createSwitch('Enable Music', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
+        createSwitch('Enable Music (WIP)', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
             { label: 'All Sounds', description: 'Enable/disable all sounds in the game', key: 'allSoundsSwitchValue', defaultState: 'disabled' }
         ]);
 
         const thirdCategory = createCategory('Miscellaneous Settings');
         createSwitch('hi', 'hello, this does absolutely nothing', 'hiSwitchValue', 'enabled', thirdCategory);
+        createSwitch('Enable Dev Levels', 'Enables in development levels', 'devLevelsSwitchValue', 'enabled', thirdCategory);
     }
 
     backgroundOverlay.onclick = closeSettingsMenu;  
@@ -854,6 +860,9 @@ function startLevel(level) {
                 obstacleElement = document.createElement('img');
                 obstacleElement.src = './assets/yellow-orb.png';
             }
+        } else if (obstacle.type === 'intoship') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/intoship.png';
         }
 
         if (obstacleElement) {
@@ -915,12 +924,14 @@ function initPlayer(gameContainer) {
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') {
             e.preventDefault(); // your welcome human being, learn how js works <3
+            player.gravity = 0.5;
             jump();
         }
     });
 
     document.addEventListener('mousedown', (e) => {
         if (e.button === 0) {
+            player.gravity = 0.5;
             jump();
         }
     });    
@@ -948,7 +959,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
 
     let collidedObstacles = [];
     obstacleElements.forEach(obstacle => {
@@ -1004,6 +1015,40 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                     }
                 });
                 return;
+            } else if (obstacle.src.includes('intoship.png')) {
+                // cod being retarded rn
+                if (playerElement.src === './assets/player.png') {
+                    return;
+                }
+
+                playerElement.src = './assets/ship.png';
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') {
+                        e.preventDefault();
+                        player.gravity = 0;
+                    }
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    if (e.code === 'Space' || e.code === 'KeyW' || e.code === 'ArrowUp') {
+                        player.gravity = 0.5;
+                    }
+                });
+
+                document.addEventListener('mousedown', (e) => {
+                    if (e.button === 0) {
+                        player.gravity = 0;
+                    }
+                });
+
+                document.addEventListener('mouseup', (e) => {
+                    if (e.button === 0) {
+                        player.gravity = 0.5;
+                    }
+                });
+
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -1054,7 +1099,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
 
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
@@ -1068,7 +1113,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
 
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -1105,6 +1150,9 @@ function checkCollisions(gameInterval) {
             }
             if (obstacle.src.includes('yellow-orb.png')) {
                 return;
+            }
+            if (obstacle.src.includes('intoship.png')) {
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -1125,7 +1173,7 @@ function checkCollisions(gameInterval) {
     }
 }
 
-document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"]').forEach(obstacle => {
+document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]').forEach(obstacle => {
     activeObstacles.push(obstacle);
 });
 
