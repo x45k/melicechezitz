@@ -5,8 +5,8 @@ let currentPage = 0;
 let currentLevel = 0;
 let levelToGoToAfterOk = 0;
 let activeObstacles = [];
-let totalCash = 0;
-let purchasedItems = [];
+let totalCash = parseInt(localStorage.getItem('totalCash')) || 0;
+let purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
 const levelsPerPage = 5;
 const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
 const playerHeight = 30;
@@ -411,20 +411,20 @@ function showLevelMenu() {
             cashMessage.style.fontSize = '20px';
             cashMessage.style.marginBottom = '20px';
             tabContent.appendChild(cashMessage);
-    
+        
             const playerImage = document.createElement('img');
             playerImage.src = './assets/player.png';
             playerImage.style.width = '100px';
             playerImage.style.cursor = 'pointer';
             playerImage.style.marginBottom = '10px';
             tabContent.appendChild(playerImage);
-    
+        
             playerImage.onclick = () => {
                 const confirmMessage = document.createElement('p');
                 confirmMessage.textContent = 'Are you sure you want to buy this for $0?';
                 confirmMessage.style.marginTop = '20px';
                 tabContent.appendChild(confirmMessage);
-    
+        
                 const confirmButton = document.createElement('button');
                 confirmButton.textContent = 'OK';
                 confirmButton.style.marginTop = '10px';
@@ -434,33 +434,34 @@ function showLevelMenu() {
                 confirmButton.style.border = 'none';
                 confirmButton.style.borderRadius = '5px';
                 confirmButton.style.cursor = 'pointer';
-    
+        
                 confirmButton.onclick = () => {
                     if (totalCash >= 0) {
                         purchasedItems.push({
-                            name: 'Player Image', 
-                            src: './assets/player.png' 
-                        }); 
-                        totalCash -= 0; 
+                            name: 'Player Image',
+                            src: './assets/player.png'
+                        });
+                        totalCash -= 0;
                         cashMessage.textContent = `Cash: $${totalCash}`;
+                        saveShopData();
                     }
                     confirmMessage.remove();
                     confirmButton.remove();
                 };
-    
+        
                 tabContent.appendChild(confirmButton);
             };
         }
-    
+        
         function showPurchased() {
             tabContent.innerHTML = '';
-    
+        
             const purchasedTitle = document.createElement('p');
             purchasedTitle.textContent = 'Purchased Items:';
             purchasedTitle.style.fontSize = '20px';
             purchasedTitle.style.marginBottom = '10px';
             tabContent.appendChild(purchasedTitle);
-    
+        
             if (purchasedItems.length === 0) {
                 const noItemsMessage = document.createElement('p');
                 noItemsMessage.textContent = 'No items purchased yet.';
@@ -473,37 +474,37 @@ function showLevelMenu() {
                     purchasedItemContainer.style.display = 'flex';
                     purchasedItemContainer.style.alignItems = 'center';
                     purchasedItemContainer.style.marginTop = '10px';
-    
+        
                     const purchasedItemImage = document.createElement('img');
                     purchasedItemImage.src = item.src;
                     purchasedItemImage.style.width = '50px';
                     purchasedItemImage.style.marginRight = '10px';
-    
+        
                     const purchasedItemName = document.createElement('p');
                     purchasedItemName.textContent = item.name;
                     purchasedItemName.style.fontSize = '18px';
-    
+        
                     purchasedItemContainer.appendChild(purchasedItemImage);
                     purchasedItemContainer.appendChild(purchasedItemName);
                     tabContent.appendChild(purchasedItemContainer);
                 });
             }
         }
-    
+        
         showMarketplace();
-    
+        
         marketplaceTab.onclick = () => {
             marketplaceTab.style.borderBottom = '2px solid #000';
             purchasedTab.style.borderBottom = 'none';
             showMarketplace();
         };
-    
+        
         purchasedTab.onclick = () => {
             purchasedTab.style.borderBottom = '2px solid #000';
             marketplaceTab.style.borderBottom = 'none';
             showPurchased();
         };
-    
+        
         shopOverlay.appendChild(shopMenu);
     
         shopOverlay.onclick = (e) => {
@@ -1181,6 +1182,8 @@ function levelComplete() {
         totalCash += 10 + (currentLevel * 5);
     }
 
+    saveShopData();
+
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
     overlay.style.top = '0';
@@ -1229,6 +1232,11 @@ function resetPlayer() {
     player.y = window.innerHeight - playerHeight - 5;
     player.velocityY = 0;
     player.jumpCount = 0;
+}
+
+function saveShopData() {
+    localStorage.setItem('totalCash', totalCash.toString());
+    localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
 }
 
 window.onload = initGame;
