@@ -1159,6 +1159,7 @@ function checkCollisions(gameInterval) {
             } else {
                 if (autoRestartSwitchValue) {
                     navigateToLevel(currentLevel);
+                    return;
                 } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
