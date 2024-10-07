@@ -784,6 +784,7 @@ function showLevelMenu() {
         const thirdCategory = createCategory('Miscellaneous Settings');
         createSwitch('hi', 'hello, this does absolutely nothing', 'hiSwitchValue', 'enabled', thirdCategory);
         createSwitch('Enable Dev Levels', 'Enables in development levels', 'devLevelsSwitchValue', 'enabled', thirdCategory);
+        createSwitch('Enable Auto Retry', 'Automatically restarts the level on death', 'autoRestartSwitchValue', 'disabled', thirdCategory);
     }
 
     backgroundOverlay.onclick = closeSettingsMenu;  
