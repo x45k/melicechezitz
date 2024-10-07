@@ -1114,7 +1114,7 @@ function moveObstacles(gameContainer) {
 }
 
 function checkCollisions(gameInterval) {
-    const byeSwitchValue = loadSwitchValue('autoRestartSwitchValue') === 'true';
+    const autoRestartSwitchValue = loadSwitchValue('autoRestartSwitchValue') === 'true';
     
     const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
 
