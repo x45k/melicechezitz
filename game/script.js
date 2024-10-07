@@ -1155,8 +1155,12 @@ function checkCollisions(gameInterval) {
             if (obstacle.src.includes('intoship.png')) {
                 return;
             } else {
+                if (autoRestartSwitchValue) {
+                    navigateToLevel(currentLevel);
+                } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
+                }
             }
         } else {
             if (parseFloat(obstacle.style.left) + obstacleRect.width < playerRect.left) {
