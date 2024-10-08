@@ -1157,14 +1157,16 @@ function checkCollisions(gameInterval) {
             if (obstacle.src.includes('intoship.png')) {
                 return;
             } else {
-                if (autoRestartSwitchValue) {
-                    navigateToLevel(currentLevel);
-                    return;
-                } else {
                 clearInterval(gameInterval);
-                showGameOverMessage();
+                
+                if (autoRestartSwitchValue) {
+                    setTimeout(() => {
+                        navigateToLevel(currentLevel)
+                    }, 1500);
+                } else {
+                    showGameOverMessage();
                 }
-            }
+            }   
         } else {
             if (parseFloat(obstacle.style.left) + obstacleRect.width < playerRect.left) {
                 obstacle.setAttribute('data-cleared', 'true');
@@ -1186,6 +1188,8 @@ document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/gr
 });
 
 function showGameOverMessage() { 
+    const autoRestartSwitchValue = loadSwitchValue('autoRestartSwitchValue') === 'true';
+    if (autoRestartSwitchValue) return;
     // idk why tf this works, but it does so aight
 
     let existingMessageContainer = document.querySelector('div[style*="position: fixed;"]');
