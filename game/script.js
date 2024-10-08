@@ -736,6 +736,91 @@ function showLevelMenu() {
         };
 
         document.addEventListener('click', closeContextMenu);
+    }
+
+    function createDropdown(labelText, description, dropdownKey, options, defaultOption, categoryContainer) {
+        const dropdownContainer = document.createElement('div');
+        dropdownContainer.style.display = 'flex';
+        dropdownContainer.style.alignItems = 'center';
+        dropdownContainer.style.marginBottom = '20px';
+    
+        const label = document.createElement('label');
+        label.textContent = labelText;
+        label.style.fontFamily = 'Poppins, sans-serif';
+        label.style.fontSize = '18px';
+        label.style.marginRight = 'auto';
+        label.title = description;
+        label.style.cursor = 'default';
+    
+        const selectContainer = document.createElement('div');
+        selectContainer.style.position = 'relative';
+        selectContainer.style.width = '150px';
+        selectContainer.style.height = '36px';
+        selectContainer.style.borderRadius = '8px';
+        selectContainer.style.backgroundColor = '#555';
+        selectContainer.style.overflow = 'hidden';
+        selectContainer.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+        selectContainer.style.transition = 'background-color 0.3s';
+    
+        const select = document.createElement('select');
+        select.style.width = '100%';
+        select.style.height = '100%';
+        select.style.border = 'none';
+        select.style.outline = 'none';
+        select.style.fontFamily = 'Poppins, sans-serif';
+        select.style.fontSize = '16px';
+        select.style.color = '#fff';
+        select.style.backgroundColor = 'transparent';
+        select.style.padding = '0 10px';
+        select.style.cursor = 'pointer';
+        select.style.appearance = 'none';
+    
+        select.style.option = `
+            color: #fff;
+            background-color: #333;
+        `;
+    
+        const arrow = document.createElement('div');
+        arrow.style.position = 'absolute';
+        arrow.style.right = '10px';
+        arrow.style.top = '50%';
+        arrow.style.transform = 'translateY(-50%)';
+        arrow.style.width = '0'; 
+        arrow.style.height = '0'; 
+        arrow.style.borderLeft = '5px solid transparent';
+        arrow.style.borderRight = '5px solid transparent';
+        arrow.style.borderTop = '7px solid #fff';
+    
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            optionElement.style.color = '#000';
+            optionElement.style.backgroundColor = '#fff';
+            select.appendChild(optionElement);
+        });
+    
+        const savedOption = loadDropdownValue(dropdownKey);
+        select.value = savedOption !== null ? savedOption : defaultOption;
+    
+        select.onchange = () => {
+            saveDropdownValue(dropdownKey, select.value);
+        };
+    
+        selectContainer.appendChild(select);
+        selectContainer.appendChild(arrow);
+        dropdownContainer.appendChild(label);
+        dropdownContainer.appendChild(selectContainer);
+        categoryContainer.appendChild(dropdownContainer);
+    }
+    
+    
+    function loadDropdownValue(key) {
+        return localStorage.getItem(key);
+    }
+    
+    function saveDropdownValue(key, value) {
+        localStorage.setItem(key, value);
     }    
 
     function closeSettingsMenu() {
@@ -775,6 +860,8 @@ function showLevelMenu() {
         const firstCategory = createCategory('Graphics Settings');
         createSwitch('Enable Moving Grass (BUGGY)', 'Enables moving grass', 'byeSwitchValue', 'disabled', firstCategory);
         createSwitch('Enable Jump Orbs (BUGGY)', 'Enables double jump orbs', 'doubleJumpOrbsSwitchValue', 'enabled', firstCategory);
+        createSwitch('Enable Underwater Background', 'Enables the underwater background', 'underWaterBackgroundSwitchValue', 'enabled', firstCategory);
+        createDropdown('hi but dropdown', 'hello.', 'graphicsQuality', ['hi', 'hi2', 'hi3'], 'hi2', firstCategory);
 
         const secondCategory = createCategory('Audio Settings');
         createSwitch('Enable Music (WIP)', 'Toggles game music.', 'musicSwitchValue', 'enabled', secondCategory, [
@@ -801,6 +888,7 @@ function loadSwitchValue(key) {
 function startLevel(level) {
     const byeSwitchValue = loadSwitchValue('byeSwitchValue') === 'true';
     const doubleJumpOrbsSwitchValue = loadSwitchValue('doubleJumpOrbsSwitchValue') === 'true';
+    const underWaterBackgroundSwitchValue = loadSwitchValue('underWaterBackgroundSwitchValue') === 'true';
 
     document.body.innerHTML = '';
     document.body.style.userSelect = 'none';
@@ -815,7 +903,7 @@ function startLevel(level) {
     document.body.appendChild(gameContainer);
 
     const background = document.createElement('img');
-    background.src = './assets/background.png';
+    background.src = underWaterBackgroundSwitchValue ? './assets/underwater.png' : './assets/background.png';
     background.style.position = 'absolute';
     background.style.width = '100%';
     background.style.height = '100%';
