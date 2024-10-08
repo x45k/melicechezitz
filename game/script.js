@@ -1133,30 +1133,20 @@ function checkCollisions(gameInterval) {
             playerRect.bottom > obstacleRect.top &&
             playerRect.top < obstacleRect.bottom
         ) {
-            if (obstacle.src.includes('block.png')) {
+            const obstacleImages = [
+                'block.png',
+                'expiramental-photo.png',
+                'blue-potion.png',
+                'yellow-potion.png',
+                'green-potion.png',
+                'black-potion.png',
+                'yellow-orb.png',
+                'intoship.png'
+              ];
+              
+              if (obstacleImages.some(image => obstacle.src.includes(image))) {
                 return;
-            }
-            if (obstacle.src.includes('expiramental-photo.png')) {
-                return;
-            }
-            if (obstacle.src.includes('blue-potion.png')) {
-                return;
-            }
-            if (obstacle.src.includes('yellow-potion.png')) {
-                return;
-            }
-            if (obstacle.src.includes('green-potion.png')) {
-                return;
-            }
-            if (obstacle.src.includes('black-potion.png')) {
-                return;
-            }
-            if (obstacle.src.includes('yellow-orb.png')) {
-                return;
-            }
-            if (obstacle.src.includes('intoship.png')) {
-                return;
-            } else {
+              } else {
                 clearInterval(gameInterval);
                 
                 if (autoRestartSwitchValue) {
