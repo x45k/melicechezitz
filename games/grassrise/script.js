@@ -100,7 +100,18 @@ function gameLoop() {
     if (gameRunning) {
         requestAnimationFrame(gameLoop);
     } else {
-        alert('Game Over!');
+    let existingMessageContainer = document.querySelector('div[style*="position: fixed;"]');
+
+    if (existingMessageContainer) {
+        existingMessageContainer.innerHTML = `
+            <h2>You touched the grass!</h2>
+            <p>Game over!</p>
+            <button id="dismiss-button" style="margin-top: 10px; padding: 10px 20px;">Dismiss</button>
+            <button id="restart-button" style="margin-top: 10px; padding: 10px 20px;">Restart</button>
+        `;
+    } else {
+        return;
+    }
         balloon.y = canvas.height - 80;
         loadLevel();
         gameRunning = true;
