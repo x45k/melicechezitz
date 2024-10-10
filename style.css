@@ -4,3 +4,24 @@ body {
   padding: 25px;
   font-family: sans-serif;
 }
+
+h1 {
+  text-align: center;
+}
+
+.play-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.play-button:hover {
+  background-color: #1c86ee;
+}

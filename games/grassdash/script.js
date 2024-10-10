@@ -108,7 +108,7 @@ const levels = [
     level14,
     [
         { type: 'experimental' },
-        { type: 'intoship', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
+        { type: 'intoplayer', x: 900, y: window.innerHeight - grassHeight - obstacleHeight, width: 100, height: 100 },
         { type: 'grass', x: 1200, y: window.innerHeight - grassHeight, width: 85, height: (grassHeight + 10) },
     ],
     /* example block usage:
@@ -952,6 +952,9 @@ function startLevel(level) {
         } else if (obstacle.type === 'intoship') {
             obstacleElement = document.createElement('img');
             obstacleElement.src = './assets/intoship.png';
+        } else if (obstacle.type === 'intoplayer') {
+            obstacleElement = document.createElement('img');
+            obstacleElement.src = './assets/intoplayer.png';
         }
 
         if (obstacleElement) {
@@ -1048,7 +1051,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
     player.velocityY += player.gravity; 
     player.y += player.velocityY;
 
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"], img[src="./assets/intoplayer.png"]');
 
     let collidedObstacles = [];
     obstacleElements.forEach(obstacle => {
@@ -1138,6 +1141,9 @@ function updateGame(playerElement, gameContainer, gameInterval) {
                 });
 
                 return;
+            } else if (obstacle.src.includes('intoplayer.png')) {
+                playerElement.src = './assets/player.png';
+                return;
             } else {
                 clearInterval(gameInterval);
                 showGameOverMessage();
@@ -1188,7 +1194,7 @@ function updateGame(playerElement, gameContainer, gameInterval) {
 }
 
 function moveObstacles(gameContainer) {
-    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
+    const obstacleElements = gameContainer.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"], img[src="./assets/intoplayer.png"]');
 
     obstacleElements.forEach(obstacle => {
         const currentX = parseFloat(obstacle.style.left);
@@ -1204,7 +1210,7 @@ function moveObstacles(gameContainer) {
 function checkCollisions(gameInterval) {
     const autoRestartSwitchValue = loadSwitchValue('autoRestartSwitchValue') === 'true';
     
-    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]');
+    const obstacleElements = document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"], img[src="./assets/intoplayer.png"]');
 
     obstacleElements.forEach(obstacle => {
         const obstacleRect = obstacle.getBoundingClientRect();
@@ -1229,7 +1235,8 @@ function checkCollisions(gameInterval) {
                 'green-potion.png',
                 'black-potion.png',
                 'yellow-orb.png',
-                'intoship.png'
+                'intoship.png',
+                'intoplayer.png'
               ];
               
               if (obstacleImages.some(image => obstacle.src.includes(image))) {
@@ -1261,7 +1268,7 @@ function checkCollisions(gameInterval) {
     }
 }
 
-document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"]').forEach(obstacle => {
+document.querySelectorAll('img[src="./assets/grass-1.png"], img[src="./assets/grass-2.png"], img[src="./assets/block.png"], img[src="./assets/expiramental-photo.png"], img[src="./assets/blue-potion.png"], img[src="./assets/yellow-potion.png"], img[src="./assets/green-potion.png"], img[src="./assets/black-potion.png"], img[src="./assets/yellow-orb.png"], img[src="./assets/intoship.png"], img[src="./assets/intoplayer.png"]').forEach(obstacle => {
     activeObstacles.push(obstacle);
 });
 
