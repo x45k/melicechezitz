@@ -20,19 +20,18 @@ header h1 {
     margin: 0;
 }
 
-/* Adding space between header and card */
 main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 150px); /* Adjusted height */
+    height: calc(100vh - 150px); 
     flex: 1;
-    padding-top: 50px; /* Separation between title and card */
+    padding-top: 50px; 
 }
 
 .card-container {
-    display: flex; /* Align cards horizontally */
-    gap: 20px; /* Space between cards */
+    display: flex;
+    gap: 20px;
 }
 
 .card-link {
@@ -43,7 +42,7 @@ main {
     background-color: #1e2b37;
     border-radius: 10px;
     overflow: hidden;
-    width: 300px; /* Fixed width for each card */
+    width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease-in-out;
 }
