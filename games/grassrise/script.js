@@ -10,14 +10,14 @@ let balloon = {
     y: canvas.height - 80,
     width: 50,
     height: 50,
-    heightTraveled: 0 // Tracks how far the balloon has traveled
+    heightTraveled: 0
 };
 
 let gameRunning = true;
-let gamePaused = false; // Variable to track game pause state
+let gamePaused = false;
 let mouseX, mouseY;
 let cameraOffsetY = 0;
-let heightMarkers = [100, 500, 1000]; // Add more markers as needed
+let heightMarkers = [100, 500, 1000];
 
 const grassImage = new Image();
 grassImage.src = './assets/grass-1.png';
@@ -28,20 +28,17 @@ backgroundImage.src = './assets/background.png';
 const balloonImage = new Image();
 balloonImage.src = './assets/balloon.png';
 
-// Pause button icon
 const pauseIcon = new Image();
-pauseIcon.src = './assets/pause-icon.png'; // Add your pause icon path here
+pauseIcon.src = './assets/pause-icon.png';
 
-const buttonSize = 50; // Size of the pause button
+const buttonSize = 50;
 
-// Define the levels with specific grass positions
 const levels = [
     [
         { type: 'grass', x: canvas.width / 2 - 25, y: -50, width: 50, height: 50 }
     ]
 ];
 
-// Load the grass objects from the levels
 function loadLevel() {
     grassArray = levels[0].map(grassData => new Grass(grassData.x, grassData.y, grassData.width, grassData.height));
 }
@@ -53,7 +50,7 @@ class Grass {
         this.width = width;
         this.height = height;
         this.speed = 2;
-        this.originalX = x; // Store the original X and Y for resetting
+        this.originalX = x;
         this.originalY = y;
     }
 
@@ -70,8 +67,8 @@ class Grass {
     }
 
     resetToOriginalPosition() {
-        this.x = this.originalX; // Reset to original X
-        this.y = this.originalY; // Reset to original Y
+        this.x = this.originalX;
+        this.y = this.originalY;
     }
 
     updatePosition(cursorX, cursorY) {
@@ -114,32 +111,29 @@ function restartGame() {
     balloon.heightTraveled = 0;
     gameRunning = true;
 
-    // Reload the level to reset the grass positions
     loadLevel();
 
     requestAnimationFrame(gameLoop);
 }
 
-// Draws the pause button in the top-right corner
 function drawPauseButton() {
     ctx.drawImage(pauseIcon, canvas.width - buttonSize - 20, 20, buttonSize, buttonSize);
 }
 
-// Check if the pause button is clicked
 function checkPauseButtonClick(x, y) {
     const buttonX = canvas.width - buttonSize - 20;
     const buttonY = 20;
 
     if (x >= buttonX && x <= buttonX + buttonSize && y >= buttonY && y <= buttonY + buttonSize) {
-        gamePaused = !gamePaused; // Toggle pause state
+        gamePaused = !gamePaused;
         if (!gamePaused) {
-            requestAnimationFrame(gameLoop); // Resume the game loop when unpaused
+            requestAnimationFrame(gameLoop);
         }
     }
 }
 
 function gameLoop() {
-    if (gamePaused) return; // If the game is paused, stop the loop
+    if (gamePaused) return; 
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -147,16 +141,15 @@ function gameLoop() {
 
     cameraOffsetY = Math.max(0, canvas.height - balloon.y - balloon.height);
 
-    balloon.heightTraveled += grassArray[0].speed; // Increment the traveled height
+    balloon.heightTraveled += grassArray[0].speed; 
 
-    // Display height markers on the side
     displayHeightMarkers();
 
     ctx.drawImage(balloonImage, balloon.x, balloon.y, balloon.width, balloon.height);
 
     grassArray.forEach((grass, index) => {
         grass.update();
-        grass.updatePosition(mouseX, mouseY); // Re-enable grass movement by cursor
+        grass.updatePosition(mouseX, mouseY);
         grass.draw(cameraOffsetY);
 
         if (isCollision(grass)) {
@@ -164,11 +157,10 @@ function gameLoop() {
         }
 
         if (grass.isOffScreen()) {
-            grass.resetToOriginalPosition(); // Reset grass to its original position from the levels array
+            grass.resetToOriginalPosition();
         }
     });
 
-    // Draw the pause button
     drawPauseButton();
 
     if (gameRunning) {
@@ -178,17 +170,14 @@ function gameLoop() {
     }
 }
 
-// Event listener for mouse movement
 canvas.addEventListener('mousemove', (event) => {
     mouseX = event.pageX;
     mouseY = event.pageY;
 });
 
-// Event listener for mouse clicks to detect pause button clicks
 canvas.addEventListener('click', (event) => {
     checkPauseButtonClick(event.pageX, event.pageY);
 });
 
-// Load level and start the game loop
 loadLevel();
 requestAnimationFrame(gameLoop);
