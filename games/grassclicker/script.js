@@ -42,14 +42,32 @@ const upgrades = Array.from({ length: 15 }, (_, index) => {
                 grassPerSecond += 0.3;
             } else if (index === 1) {
                 grassPerSecond += 1;
-            } else if (index <= 11) {
-                grassPerSecond += 0.5;
-            } else if (index === 12) {
-                grassPerSecond += 1.5;
-            } else if (index === 13) {
-                grassPerSecond += 2; 
-            } else if (index === 14) {
+            } else if (index === 2) {
                 grassPerSecond += 5;
+            } else if (index === 3) {
+                grassPerSecond += 50;
+            } else if (index === 4) {
+                grassPerSecond += 200; 
+            } else if (index === 5) {
+                grassPerSecond += 1000;
+            } else if (index === 6) {
+                grassPerSecond += 5000;
+            } else if (index === 7) {
+                grassPerSecond += 25000;
+            } else if (index === 8) {
+                grassPerSecond += 100000;
+            } else if (index === 9) {
+                grassPerSecond += 500000;
+            } else if (index === 10) {
+                grassPerSecond += 2000000;
+            } else if (index === 11) {
+                grassPerSecond += 20000000;
+            } else if (index === 12) {
+                grassPerSecond += 200000000;
+            } else if (index === 13) {
+                grassPerSecond += 2000000000;
+            } else if (index === 14) {
+                grassPerSecond += 20000000000;
             }
             grassPerSecond = Math.round(grassPerSecond * 10) / 10;
             upgrades[index].level++;
