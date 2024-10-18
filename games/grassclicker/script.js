@@ -178,12 +178,12 @@ function updateUpgradeButtons() {
 function updateUpgradeDisplay() {
     upgrades.forEach((upgrade, index) => {
         const button = document.getElementById(`upgrade-${index}`);
-        button.textContent = `${upgrade.name} (Cost: ${upgrade.currentCost})`;
+        button.textContent = `${upgrade.name} (Cost: ${upgrade.currentCost.toLocaleString()})`;
     });
 }
 
 function updateUI() {
-    grassCountElement.textContent = grassCount;
+    grassCountElement.textContent = grassCount.toLocaleString();
 }
 
 function generateGrass() {
