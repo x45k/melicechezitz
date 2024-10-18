@@ -182,8 +182,20 @@ function updateUpgradeDisplay() {
     });
 }
 
+const grassPerSecondElement = document.createElement('div');
+grassPerSecondElement.id = 'grass-per-second';
+grassPerSecondElement.style.position = 'absolute';
+grassPerSecondElement.style.top = '20px';
+grassPerSecondElement.style.right = '20px';
+grassPerSecondElement.style.padding = '10px';
+grassPerSecondElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+grassPerSecondElement.style.borderRadius = '8px';
+grassPerSecondElement.style.fontSize = '20px';
+document.body.appendChild(grassPerSecondElement);
+
 function updateUI() {
     grassCountElement.textContent = grassCount.toLocaleString();
+    grassPerSecondElement.textContent = `Grass per second: ${grassPerSecond.toLocaleString()} g/s`;
 }
 
 function generateGrass() {
