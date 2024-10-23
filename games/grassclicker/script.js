@@ -5,7 +5,7 @@ document.body.style.color = "#fff";
 document.body.style.textAlign = "center";
 
 let grassCount = 0;
-let clickValue = 1;
+let clickValue = 1000000000000000000000000000000000000000000000000000000;
 let grassPerSecond = 0; 
 let affordableUpgrades = Array(15).fill(false);
 
