@@ -5,7 +5,7 @@ document.body.style.color = "#fff";
 document.body.style.textAlign = "center";
 
 let grassCount = 0;
-let clickValue = 1000000000000000000000000000000000000000000000000000000;
+let clickValue = 1;
 let grassPerSecond = 0; 
 let affordableUpgrades = Array(15).fill(false);
 
@@ -53,21 +53,21 @@ const upgrades = Array.from({ length: 15 }, (_, index) => {
             } else if (index === 6) {
                 grassPerSecond += 7500;
             } else if (index === 7) {
-                grassPerSecond += 30000;
+                grassPerSecond += 40000;
             } else if (index === 8) {
-                grassPerSecond += 135000;
+                grassPerSecond += 200000;
             } else if (index === 9) {
-                grassPerSecond += 750000;
+                grassPerSecond += 1000000;
             } else if (index === 10) {
-                grassPerSecond += 2750000;
+                grassPerSecond += 6000000;
             } else if (index === 11) {
-                grassPerSecond += 30000000;
+                grassPerSecond += 39000000;
             } else if (index === 12) {
-                grassPerSecond += 300000000;
+                grassPerSecond += 210000000;
             } else if (index === 13) {
-                grassPerSecond += 3000000000;
+                grassPerSecond += 1200000000;
             } else if (index === 14) {
-                grassPerSecond += 300000000000;
+                grassPerSecond += 1000000000000;
             }
             grassPerSecond = Math.round(grassPerSecond * 10) / 10;
             upgrades[index].level++;
