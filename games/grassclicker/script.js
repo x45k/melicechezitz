@@ -67,7 +67,7 @@ const upgrades = Array.from({ length: 15 }, (_, index) => {
             } else if (index === 13) {
                 grassPerSecond += 3000000000;
             } else if (index === 14) {
-                grassPerSecond += 30000000000;
+                grassPerSecond += 300000000000;
             }
             grassPerSecond = Math.round(grassPerSecond * 10) / 10;
             upgrades[index].level++;
