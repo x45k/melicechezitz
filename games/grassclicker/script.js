@@ -39,7 +39,7 @@ const upgrades = Array.from({ length: 15 }, (_, index) => {
         minRequired: baseCost * 0.8, 
         effect: () => {
             if (index === 0) {
-                grassPerSecond += 1000000000;
+                grassPerSecond += 0.3;
             } else if (index === 1) {
                 grassPerSecond += 1;
             } else if (index === 2) {
