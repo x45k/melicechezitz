@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('./assets/background.png') no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 600px;
+    overflow: hidden;
+}
+
+#bird {
+    position: absolute;
+    width: 34px;
+    height: 24px;
+    background: url('./assets/bird.png') no-repeat;
+    background-size: cover;
+    top: 50%;
+    left: 50px;
+}
+
+.pipe {
+    position: absolute;
+    width: 52px;
+    height: 400px;
+    background: url('./assets/grass-1.png') no-repeat;
+    background-size: cover;
+}
+
+.pipe.top {
+    transform: rotate(180deg);
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: white;
+}
